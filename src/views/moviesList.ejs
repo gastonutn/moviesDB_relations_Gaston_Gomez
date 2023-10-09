@@ -1,34 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listado de Películas</title>
-    <link rel='stylesheet' href='/css/style.css' />
-
-</head>
-
-<body>
-    <figure>
-        <img src="/img/logo-DH.png" alt="Logo Digital House">
-    </figure>
+<%- include('partials/head') %>
+  <body class="bg-dark text-white text-center">
+    <%- include('partials/header') %>
+   
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+    <div class="col-12 col-md-8 bg-secondary rounded " >
+       <img src="/img/logo-DH.png" alt="Logo Digital House" width="20%">
+      </div>
+      
     <h1>LISTADO DE PELÍCULAS</h1>
-    <br>
-    <p>
-        <a class="botonAgregar" href="/movies/add">Agregar una Pelicula</a>
-        <a class="botonVolver" href="/">inicio</a>
-
-    </p>
-    <br>
-    <ul>
-        <% for( let i = 0; i < movies.length; i++ ) { %>
-        <li>
-            <a href="/movies/detail/<%= movies[i].id %>"><%= movies[i].title %></a>
-        </li>
-        <% } %>
-
-    </ul>
+      <div class="d-flex justify-content-center gap-3"><a class=" btn btn-primary " href="/movies/add">Agregar una Pelicula</a>
+            <a class=" btn btn-primary" href="/">inicio</a>
+      </div>
+        
+   
+    <div >
+        <ul>
+            <% for( let i = 0; i < movies.length; i++ ) { %>
+            <li class="list-unstyled my-1 fs-3">
+                <a href="/movies/detail/<%= movies[i].id %>"><%= movies[i].title %></a>
+            </li>
+            <% } %>
+    
+        </ul>
+    </div>
+</div>
+</div>
+   
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 
 </html>

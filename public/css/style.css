@@ -12,12 +12,8 @@ a {
   color: #00B7FF;
   text-decoration: none;
 }
-img{
-  width: 100%;
-}
-figure{
-  width: 20%;
-}
+
+
 .titulo{
   text-align: center;
 }
@@ -38,8 +34,4 @@ figure{
   background-color: #00B7FF;
   padding: 10px;
   border-radius: 10px;
-}
-.formulario{
-  margin: auto;
-  width: 20%;
 }

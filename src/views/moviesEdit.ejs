@@ -14,7 +14,7 @@
       </figure>
     <h1 class="titulo">Película Editada:  <%= Movie.title %></h1>
     <section class="formulario">
-        <form action="/movies/update/<%= Movie.id %>" method="POST">
+        <form action="/movies/update/<%= Movie.id %>?_method=put" method="POST">
             <label for="title">Title </label>
             <p><input type="text" name="title" id="" value="<%= Movie.title %>" required></p>
             <label for="rating">Rating </label>
@@ -22,7 +22,7 @@
             <label for="awards">Awards </label>
             <p><input type="number" name="awards" id="" value="<%= Movie.awards %>" required></p>
             <label for="release_date">Release date </label>
-            <p><input type="date" name="release_date" id="" value="<%= Movie.release_date %> required"></p>
+            <p><input type="date" name="release_date" id="" value="<%= moment(Movie.release_date).format('YYYY-MM-DD')%>"></p>
             <label for="length">Length </label>
             <p><input type="number" name="length" id="" value="<%= Movie.length %>" required></p>
             <label for="genre_id">Genre </label>
@@ -33,6 +33,17 @@
                     <% }); %>
                 </select>
             </p>
+            <div>
+                <% actors.forEach(actor => {%>
+                    <div class="form-check">
+                        <input name='actors' class="form-check-input" type="checkbox" <%= Movie.actors.map(actor => actor.id).includes(actor.id) && 'checked'%>  value="<%= actor.id %>" id="flexCheckDefault" >
+                        <label class="form-check-label" for="flexCheckDefault">
+                          <%= actor.first_name  %>  <%= actor.last_name  %>
+                        </label>
+                      </div>
+                    <%}); %>
+            </div>
+
 
     <!--
             <label for="genre_id">Genre ID </label>
