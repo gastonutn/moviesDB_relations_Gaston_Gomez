@@ -2,31 +2,30 @@
 <html lang="en">
 
 <%- include('partials/head') %>
-  <body class="bg-dark text-white text-center">
+  <body class="bg-dark ">
     <%- include('partials/header') %>
    
     <div class="container">
-        <div class="row d-flex justify-content-center">
-    <div class="col-12 col-md-8 bg-secondary rounded " >
-       <img src="/img/logo-DH.png" alt="Logo Digital House" width="20%">
-      </div>
+        <div class="row d-flex  ">
+   
       
-    <h1>LISTADO DE PELÍCULAS</h1>
-      <div class="d-flex justify-content-center gap-3"><a class=" btn btn-primary " href="/movies/add">Agregar una Pelicula</a>
-            <a class=" btn btn-primary" href="/">inicio</a>
-      </div>
+      <h4 class="mt-5 ms-4">LISTADO DE PELÍCULAS</h4>
+        <div class="d-flex ms-4 gap-3">
+          <a class="btn " id="btns"  href="/movies/add">Agregar una Pelicula</a>
+            <a class="btn" id="btn" href="/">inicio</a>
+         </div>
         
    
-    <div >
+      <div >
         <ul>
             <% for( let i = 0; i < movies.length; i++ ) { %>
-            <li class="list-unstyled my-1 fs-3">
+            <li class="list-unstyled my-1 fs-5">
                 <a href="/movies/detail/<%= movies[i].id %>"><%= movies[i].title %></a>
             </li>
             <% } %>
     
         </ul>
-    </div>
+      </div>
 </div>
 </div>
    

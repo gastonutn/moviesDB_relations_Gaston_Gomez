@@ -25,7 +25,9 @@ const moviesController = {
             })
     },
     'detail': (req, res) => {
-        db.Movie.findByPk(req.params.id)
+        db.Movie.findByPk(req.params.id,{
+            include:['actors']
+        })
             .then(movie => {
               return  res.render('moviesDetail', {...movie.dataValues, moment});
             });
@@ -56,12 +58,18 @@ const moviesController = {
     },
     //Aqui dispongo las rutas para trabajar con el CRUD
     add: function (req, res) {
-        db.Genre.findAll({
+        const actors = db.Actor.findAll({
+            order: [['first_name'],
+            ['last_name']]
+        })
+        const genres = db.Genre.findAll({
             order: ['name']
         })
-        .then(genres=> {
+        Promise.all([actors,genres])
+        .then(([actors,genres])=> {
             return res.render('moviesAdd',{
-                genres
+                genres,
+                actors
             })
         })
         .catch(error => console.log(error));
@@ -69,28 +77,42 @@ const moviesController = {
     create: function (req,res) {
         let errors=validationResult(req)
         if(errors.isEmpty()){
-            const {title,rating,release_date,awards,length}=req.body
+            
+            const {title,rating,release_date,awards,length,genre_id}=req.body
+
+            const actors = [req.body.actors].flat()
+            console.log('<<<<<<<<<<<<',actors);
+
             db.Movie.create({
                 title: title.trim(),
                 rating,
                 release_date,
                 awards,
                 length,
-    
+                genre_id,
+                actors
             })
-            .then(movie => {
-                console.log(movie);
-                return res.redirect('/movies')
-            })
-
-        }else { 
-            return res.render('moviesAdd',{
-                errors: errors.mapped(),
-                old: req.body
-            })
-
-        }
-       
+            
+            .then((movie) => {
+                
+                if(actors){
+                    const actorsDB = actors.map(actor => {
+                        return {
+                            movie_id: movie.id,
+                            actor_id: actor
+                        }
+                    })
+                    db.Actor_Movie.bulkCreate(actorsDB,{
+                        validate:true
+                   }).then(() =>{ 
+                    console.log('actores agregados')})
+                    return res.redirect('/movies')
+                   }else {
+                    return res.redirect('/movies')
+                   }
+               
+            }).catch(error => console.log(error));
+        } 
     },
     edit: function(req,res) {
 
@@ -158,26 +180,51 @@ const moviesController = {
                     }
                     )}
                    }).then(() => {
-                    console.log('actores agregados');
+                    console.log('actores agregados')
                    })
                 })
-
-    
-
-        }).catch(error => console.log(error))
+        })
+        .catch(error => console.log(error))
         .finally(()=> res.redirect('/movies'))
        
     },
     delete: function (req,res) {
 
+
     },
     destroy: function (req,res) {
 
+        db.Actor_Movie.destroy({
+            where:{
+                movie_id:req.params.id
+            }
+        })
+        .then(()=> {
+            db.Actor.update(
+                {
+                    favorite_movie_id:null
+                },
+                {
+                    where:{
+                        favorite_movie_id: req.params.id
+                    }
+                })
+                .then(() =>{
+                    db.Movie.destroy({
+                        where:{
+                            id:req.params.id
+                        }
+                    })
+                    .then(()=> {
+                        return res.redirect('/movies')
+
+                } )
+        })
+
+        
+        }).catch(error => console.log(error))
+
     }
 }
-// actors.forEach(actor => {
-//     if(!movie.actors.map(actor => actor.id).includes(actor)){
 
-//     }
-// });
 module.exports = moviesController;

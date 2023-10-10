@@ -4,20 +4,17 @@
   <body class="bg-dark text-white text-center">
     <%- include('partials/header') %>
 
-    <div class="container">
+    <div class="container my-2">
       <div class="row d-flex justify-content-center">
         
-      <div class="col-12 col-md-8 bg-secondary rounded">
-         <img src="/img/logo-DH.png"   alt="Logo Digital House" width="20%">
-        </div>
-    
-        <div class="my-3 ">
-           <h1 >Bienvenidos a <%= title %></h1>
+     
+        <div class="my-5 ">
+           <h3  >Bienvenidos a <%= title %></h3>
 
-          <div class="my-3">
+          <div class="my-5">
 
-            <p><a class="btn btn bg-info" href="/movies">Listado de Películas</a></p><br>
-            <p><a class="btn btn bg-info" href="/genres">Listado de generos</a></p><br>
+            <p><a class="btn" id="btn" href="/movies">Listado de Películas</a></p><br>
+            <p><a class="btn" id="btn" href="/genres">Listado de generos</a></p><br>
           </div>
         </div>
       </div>

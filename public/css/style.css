@@ -8,21 +8,10 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
-  color: #00B7FF;
-  text-decoration: none;
-}
-
-
 .titulo{
   text-align: center;
 }
-.botonAgregar , .botonModificar{
-  color: white;
-  background-color: green;
-  padding: 10px;
-  border-radius: 10px;
-}
+
 .botonBorrar{
   color: white;
   background-color: red;
@@ -34,4 +23,48 @@ a {
   background-color: #00B7FF;
   padding: 10px;
   border-radius: 10px;
+}
+h1,h4,h3{
+  color: rgb(197, 196, 196);
+}
+label{
+  color: rgb(211, 209, 209)
+}
+#btn{
+  background-color: rgb(197, 196, 196);
+  margin-bottom: 20px;
+  margin-top: 10px;
+
+}
+#btn:hover{
+  background-color: rgb(0, 0, 0);
+  color: rgb(197, 196, 196);
+}
+#btns{
+  background-color: #198754;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  color: #ffffff;
+}
+#btns:hover{
+  background-color:#157347;
+}
+.navbar{
+  background-color: rgb(0, 0, 0);
+}
+
+ a{
+  text-decoration: none;
+  list-style: none;
+  color: rgb(255, 255, 255);
+}
+
+a:hover{
+  color:  rgb(156, 156, 156);
+}
+p{
+  margin-bottom: 0;
+}
+#actores{
+  
 }
