@@ -6,22 +6,15 @@ const { log } = require('console');
 const { validationResult }=require('express-validator');
 const moment = require('moment')
 
-//Aqui tienen una forma de llamar a cada uno de los modelos
-// const {Movies,Genres,Actor} = require('../database/models');
-
-//Aquí tienen otra forma de llamar a los modelos creados
-const Movies = db.Movie;
-const Genres = db.Genre;
-const Actors = db.Actor;
 
 
-const moviesController = {
+const actorsController = {
     'list': (req, res) => {
-        db.Movie.findAll({
-            include: ['genre']
+        db.Actor.findAll({
+            include: ['movies']
         })
-            .then(movies => {
-                res.render('moviesList', {movies})
+            .then(actors => {
+                res.render('actorsList.ejs', {actors})
             })
     },
     'detail': (req, res) => {
@@ -67,7 +60,7 @@ const moviesController = {
         })
         Promise.all([actors,genres])
         .then(([actors,genres])=> {
-            return res.render('moviesAdd',{
+            return res.render('actorsAdd',{
                 genres,
                 actors
             })
@@ -78,38 +71,19 @@ const moviesController = {
         let errors=validationResult(req)
         if(errors.isEmpty()){
             
-            const {title,rating,release_date,awards,length,genre_id}=req.body
+            const {first_name,last_name,rating}=req.body
 
-            const actors = [req.body.actors].flat()
-            console.log('<<<<<<<<<<<<',actors);
-
-            db.Movie.create({
-                title: title.trim(),
-                rating,
-                release_date,
-                awards,
-                length,
-                genre_id,
-                actors
+            db.Actor.create({
+                first_name,
+                last_name,
+                rating
             })
             
-            .then((movie) => {
+            .then((actors) => {
                 
-                if(actors){
-                    const actorsDB = actors.map(actor => {
-                        return {
-                            movie_id: movie.id,
-                            actor_id: actor
-                        }
-                    })
-                    db.Actor_Movie.bulkCreate(actorsDB,{
-                        validate:true
-                   }).then(() =>{ 
-                    console.log('actores agregados')})
-                    return res.redirect('/movies')
-                   }else {
-                    return res.redirect('/movies')
-                   }
+              console.log(actors);
+                    return res.redirect('/actors')
+                   
                
             }).catch(error => console.log(error));
         } else {
@@ -270,4 +244,4 @@ const moviesController = {
     }
 }
 
-module.exports = moviesController;
+module.exports = actorsController;

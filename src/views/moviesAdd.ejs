@@ -14,34 +14,53 @@
         <form action="/movies/create" method="POST" class="d-flex col-10 col-md-8 justify-content-center flex-wrap" >
             <div class="col-10 col-md-8 mb-3 ">
                  <label for="title" class="form-label">Titulo</label>
-                 <input type="text" class="form-control" name="title" >
-              </div>
+                 <input type="text" class="form-control <%= locals.errors && (errors.title && 'is-invalid') %> " name="title" value="<%= locals.old && (old.title && old.title ) %>" >
+                 <small class="text-danger ms-2">
+                  <%= locals.errors && (errors.title && errors.title.msg) %>
+                </small>
+                </div>
               <div class="col-10 col-md-8 mb-3 ">
                 <label for="rating" class="form-label">Rating</label>
-                <input type="text" class="form-control" name="rating" >
+                <input type="text" class="form-control <%= locals.errors && (errors.rating && 'is-invalid') %>" name="rating" value="<%= locals.old && (old.rating && old.rating ) %>" >
+                <small class="text-danger ms-2">
+                  <%= locals.errors && (errors.rating && errors.rating.msg) %>
+                </small>
              </div>
              <div class="col-10 col-md-8 mb-3 ">
                 <label for="awards" class="form-label">Awards</label>
-                <input type="text" class="form-control" name="awards" >
+                <input type="text" class="form-control <%= locals.errors && (errors.awards && 'is-invalid') %>" name="awards" value="<%= locals.old && (old.awards && old.awards ) %>">
+                <small class="text-danger ms-2">
+                  <%= locals.errors && (errors.awards && errors.awards.msg) %>
+                </small>
              </div>
              <div class="col-10 col-md-8 mb-3 ">
                 <label for="release_date" class="form-label">Fecha</label>
-                <input type="date" class="form-control" name="release_date" >
+                <input type="date" class="form-control <%= locals.errors && (errors.release_date && 'is-invalid') %> " name="release_date" value="<%= locals.old && (old.release_date && old.release_date ) %>">
+                <small class="text-danger ms-2">
+                  <%= locals.errors && (errors.release_date && errors.release_date.msg) %>
+                </small>
              </div>
              <div class="col-10 col-md-8 mb-3 ">
                 <label for="length" class="form-label">Duracion</label>
-                <input type="text" class="form-control" name="length" >
-             </div>
+                <input type="text" class="form-control  <%= locals.errors && (errors.length && 'is-invalid') %>" name="length" value="<%= locals.old && (old.length && old.length ) %>">
+                <small class="text-danger ms-2">
+                  <%= locals.errors && (errors.length && errors.length.msg) %>
+                </small>
+              </div>
              <div class="col-10 col-md-8 mb-3 ">
              <label for="genreID" class="col12 col">Genero </label>
              <p>
-                 <select class="form-select" name="genre_id" id="" >
+                 <select class="form-select <%= locals.errors && (errors.genre_id && 'is-invalid') %> " name="genre_id" id="" >
                      <option value="" disabled selected>- seleccione el genero - </option>
                      <% genres.forEach(genre => { %>
-                     <option value="<%= genre.id %>"><%= genre.name %></option>
+                     <option value="<%= genre.id %>" <%=locals.old && (locals.old.genre_id===genre.id
+                      && 'selected' ) %>><%= genre.name %></option>
                      <% }); %>
                  </select>
              </p>
+             <small class="text-danger ms-2">
+              <%= locals.errors && (errors.genre_id && errors.genre_id.msg) %>
+            </small>
             </div>
           
           

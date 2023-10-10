@@ -11,29 +11,44 @@
         <form action="/movies/update/<%= Movie.id %>?_method=put" method="POST" class="d-flex col-10 col-md-8 justify-content-center flex-wrap">
             <div class="col-10 col-md-8 mb-3 ">
               <label class="form-label" for="title">Title </label>
-              <p><input class="form-control" type="text" name="title" id="" value="<%= Movie.title %>"></p>
-             </div>
+              <p><input class="form-control <%= locals.errors && (errors.title && 'is-invalid') %>" type="text" name="title" id="" value="<%= Movie.title %>"></p>
+              <small class="text-danger ms-2">
+                <%= locals.errors && (errors.title && errors.title.msg) %>
+              </small>
+            </div>
             <div class="col-10 col-md-8 mb-3 ">
               <label class="form-label" for="rating">Rating </label>
-              <p><input class="form-control" type="number" name="rating" id="" value="<%= Movie.rating %>"></p>
+              <p><input class="form-control <%= locals.errors && (errors.rating && 'is-invalid') %>" type="number" name="rating" id="" value="<%= Movie.rating %>"></p>
+              <small class="text-danger ms-2">
+                <%= locals.errors && (errors.rating && errors.rating.msg) %>
+              </small>
             </div>
             <div class="col-10 col-md-8 mb-3 ">
               <label class="form-label" for="awards">Awards </label>
-              <p><input class="form-control" type="number" name="awards" id="" value="<%= Movie.awards %>"></p>
+              <p><input class="form-control <%= locals.errors && (errors.awards && 'is-invalid') %>" type="number" name="awards" id="" value="<%= Movie.awards %>"></p>
+              <small class="text-danger ms-2">
+                <%= locals.errors && (errors.awards && errors.awards.msg) %>
+              </small>
             </div>
             <div class="col-10 col-md-8 mb-3 ">
               <label class="form-label" for="release_date">Release date </label>
-              <p><input class="form-control" type="date" name="release_date" id="" value="<%= moment(Movie.release_date).format('YYYY-MM-DD')%>"></p>
+              <p><input class="form-control <%= locals.errors && (errors.release_date && 'is-invalid') %>" type="date" name="release_date" id="" value="<%= moment(Movie.release_date).format('YYYY-MM-DD')%>"></p>
+              <small class="text-danger ms-2">
+                <%= locals.errors && (errors.release_date && errors.release_date.msg) %>
+              </small>
             </div> 
 
             <div class="col-10 col-md-8 mb-3 ">
               <label class="form-label" for="length">Length </label>
-              <p><input class="form-control" type="number" name="length" id="" value="<%= Movie.length %>"></p>
+              <p><input class="form-control <%= locals.errors && (errors.length && 'is-invalid') %>" type="number" name="length" id="" value="<%= Movie.length %>"></p>
+              <small class="text-danger ms-2">
+                <%= locals.errors && (errors.length && errors.length.msg) %>
+              </small>
             </div>
             <div class="col-10 col-md-8 mb-3 ">
               <label class="form-label" for="genre_id">Genre </label>
               <p>
-                <select name="genre_id" id="">
+                <select name="genre_id" id="" class="form-control">
                     <% genres.forEach(genre => { %>
                     <option value="<%= genre.id %>" <% if (Movie.genre_id == genre.id) { %><%= 'selected' %><% }; %>><%= genre.name %></option>
                     <% }); %>
