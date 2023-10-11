@@ -13,21 +13,21 @@
         <div class="d-flex ms-4 gap-3">
           <a class="btn " id="btns"  href="/actors/add">Agregar un actor</a>
             <a class="btn" id="btn" href="/">inicio</a>
+
          </div>
+         
         
-   
-         <div class="row">
-          <% actors.forEach(actor => { %>
-              <div class="col-6 col-md-4">
-                  <div class="form-check ">
-                      <input name='actors' class="form-check-input" type="checkbox" value="<%= actor.id %>" id="flexCheckDefault">
-                      <label class="form-check-label" for="flexCheckDefault">
-                          <%= actor.first_name %> <%= actor.last_name %>
-                      </label>
-                  </div>
-              </div>
-          <% }); %>
-      </div>
+         <div >
+          <ul>
+              <% for( let i = 0; i < actors.length; i++ ) { %>
+              <li class="list-unstyled my-1 fs-5">
+                  <a href="/actors/detail/<%= actors[i].id %>"><%= actors[i].first_name  %> <%= actors[i].last_name  %></a>
+              </li>
+              <% } %>
+      
+          </ul>
+        </div>
+        
 </div>
 </div>
    

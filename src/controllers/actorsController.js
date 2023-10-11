@@ -18,11 +18,10 @@ const actorsController = {
             })
     },
     'detail': (req, res) => {
-        db.Movie.findByPk(req.params.id,{
-            include:['actors']
-        })
-            .then(movie => {
-              return  res.render('moviesDetail', {...movie.dataValues, moment});
+        
+        db.Actor.findByPk(req.params.id)
+            .then(actors => {
+              return  res.render('actorsDetail', {...actors.dataValues});
             });
     },
     'new': (req, res) => {
@@ -227,13 +226,13 @@ const actorsController = {
                     }
                 })
                 .then(() =>{
-                    db.Movie.destroy({
+                    db.Actor.destroy({
                         where:{
                             id:req.params.id
                         }
                     })
                     .then(()=> {
-                        return res.redirect('/movies')
+                        return res.redirect('/actors')
 
                 } )
         })
