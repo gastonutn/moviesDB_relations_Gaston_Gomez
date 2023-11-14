@@ -19,7 +19,7 @@ module.exports = [
     .notEmpty()
     .withMessage("Es requerido")
     .isInt({
-        gt: 1,
+        gt: 0,
       }).withMessage("Debe ser numero positivo"),
   check("release_date")
     .notEmpty()

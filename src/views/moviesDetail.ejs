@@ -6,8 +6,8 @@
 
       <div class="container">
         <div class="row  justify-content-center ">
-            <div class="card  bg-secondary  rounded" style="width: 18rem;">
-                <img src="/img/peliculas/default-image.png" class="card-img-top bg-dark rounded" alt="...">
+            <div class="card  bg-secondary  rounded mt-5" style="width: 18rem;">
+                <img src="<%= /^(https?|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%?=~_|]/.test(image) ? image : `/img/peliculas/${image}` %>" class="card-img-top bg-dark rounded mt-1" alt="...">
                 <div class="card-body">
                   <h3 class="card-title"><%= title %> </h3>
                 </div>

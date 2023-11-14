@@ -8,7 +8,7 @@
     <h3 class="titulo mt-5">Película Editada:  <%= Movie.title %></h3>
     <div class="container">
         <div class="row justify-content-center">
-        <form action="/movies/update/<%= Movie.id %>?_method=put" method="POST" class="d-flex col-10 col-md-8 justify-content-center flex-wrap">
+        <form action="/movies/update/<%= Movie.id %>?_method=put" method="POST" class="d-flex col-10 col-md-8 justify-content-center flex-wrap" enctype="multipart/form-data">
             <div class="col-10 col-md-8 mb-3 ">
               <label class="form-label" for="title">Title </label>
               <p><input class="form-control <%= locals.errors && (errors.title && 'is-invalid') %>" type="text" name="title" id="" value="<%= Movie.title %>"></p>
@@ -68,6 +68,13 @@
                     </div>
                     <%}); %>
                 </div>
+            </div>
+            <div class="col-10 col-md-8 mb-3 ">
+              <label class="form-label btn btn-secondary" for="image">Cambiar Imagen </label>
+              <input class="form-control <%= locals.errors && (errors.length && 'is-invalid') %>" type="file" name="image" id="image" value="<%= Movie.image %>" hidden>
+              <small class="text-danger ms-2">
+                <%= locals.errors && (errors.image && errors.image.msg) %>
+              </small>
             </div>
             <div class="col-10 col-md-8 mb-3 ">
              <button  class="btn" id="btns" type="submit">Actualizar</button>

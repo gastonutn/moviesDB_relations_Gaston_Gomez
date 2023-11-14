@@ -1,27 +1,31 @@
-const path = require('path');
+
 const db = require('../database/models');
-const sequelize = db.sequelize;
-const { Op } = require("sequelize");
-const { log } = require('console');
 const { validationResult }=require('express-validator');
 const moment = require('moment')
-
-//Aqui tienen una forma de llamar a cada uno de los modelos
-// const {Movies,Genres,Actor} = require('../database/models');
-
-//Aquí tienen otra forma de llamar a los modelos creados
-const Movies = db.Movie;
-const Genres = db.Genre;
-const Actors = db.Actor;
-
+const paginate = require('express-paginate')
+const { Op } = require("sequelize");
+const API = 'http://www.omdbapi.com/?apikey=4974894';
+const axios = require('axios');
+const translatte = require('translatte')
 
 const moviesController = {
     'list': (req, res) => {
-        db.Movie.findAll({
-            include: ['genre']
+
+        db.Movie.findAndCountAll({
+            include: ['genre'],
+            limit: req.query.limit,
+            offset: req.skip
         })
-            .then(movies => {
-                res.render('moviesList', {movies})
+            .then(({count,rows}) => {
+                const pagesCount = Math.ceil(count / req.query.limit)
+
+                res.render('moviesList', {
+                movies : rows,
+                pages: paginate.getArrayPages(req)(pagesCount, pagesCount, req.query.page),
+                paginate,
+                pagesCount,
+                currentPage :  req.query.page
+            })
             })
     },
     'detail': (req, res) => {
@@ -55,6 +59,19 @@ const moviesController = {
             .then(movies => {
                 res.render('recommendedMovies.ejs', {movies});
             });
+    },
+     //Aqui debo modificar para crear la funcionalidad requerida
+     'buscar': (req, res) => {
+        const title = req.query.titulo;
+
+        fetch(`${API}&t=${title}`)
+        .then(data => {
+          return data.json() 
+        })
+        .then(movie => {            
+            return res.render('moviesDetailOmdb',{movie})
+        })
+        .catch(error => console.log(error))
     },
     //Aqui dispongo las rutas para trabajar con el CRUD
     add: function (req, res) {
@@ -173,7 +190,8 @@ const moviesController = {
                     rating,
                     release_date,
                     length,
-                    genre_id
+                    genre_id,
+                    image : req.file ? req.file.filename : null
     
                 },
                 {
@@ -267,6 +285,86 @@ const moviesController = {
         
         }).catch(error => console.log(error))
 
+    },
+    search: (req,res) => {
+      
+        const keyword = req.query.keyword
+        db.Movie.findAll({
+            where: {
+                title : {
+                    [Op.substring]: keyword
+                }
+            }
+        }).then( movies => {
+             if(!movies.length){
+                axios.get(API + `&t=${keyword}`)
+                .then(async (response) => {
+                    const {Title, Released,Genre,Awards,Poster,Ratings} = response.data
+
+                    const awardsArray = Awards.match(/\d+/g)
+                    const awardsParseado = awardsArray.map(award => +award)
+                    const awards =  awardsParseado.reduce((acum,num) => acum + num,0)
+                    
+                    const rating = Ratings[0].Value.split('/')[0]
+
+                    const release_date = moment(Released).toDate()
+
+                    const image = Poster
+     
+                    const newGenre = Genre.split(',')[0]
+                    let genre_id;
+                    if(newGenre){
+                     const {text}= await translatte(newGenre, {to: 'es'}) //traduce el genero
+                   
+                        const genres = await db.Genre.findAll({order : [['ranking','DESC']]})
+                      
+                        const [genre, genreCreated ]= await db.Genre.findOrCreate({
+                            where : { name: text },
+                            default:{
+                                active: 1,
+                                ranking: genres[0].ranking +1
+                            }   
+                        });
+                        genre_id = genre.id
+                    }
+                    
+                    let newMovie = {
+                        title:Title,
+                        awards:awards,
+                        rating: rating,
+                        release_date,
+                        genre_id,
+                        image
+                    }
+                    db.Movie.create(newMovie)
+                    .then(() =>  db.Movie.findAll({
+                        where: {
+                            title : {
+                                [Op.substring]: keyword
+                            }
+                        }
+                    })
+                    .then(movies => {
+                        return res.render('moviesList', {
+                            movies,
+                            pages: paginate.getArrayPages(req)(1, 1, req.query.page),
+                            paginate,
+                            currentPage :  req.query.page,
+                            result : 1
+                        }) 
+                    }))
+                })
+            } else {
+                return res.render('moviesList', {
+                    movies,
+                    pages: paginate.getArrayPages(req)(1, 1, req.query.page),
+                    paginate,
+                    currentPage :  req.query.page,
+                    result : 1
+                }) 
+            }
+         
+        }).catch(error => console.log(error))
     }
 }
 

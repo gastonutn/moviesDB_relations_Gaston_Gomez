@@ -25,6 +25,9 @@ module.exports = (sequelize, dataTypes) => {
             type: dataTypes.DATEONLY,
             allowNull: false
         },
+        image: {
+            type : dataTypes.STRING
+        },
         length: dataTypes.BIGINT(10),
         genre_id: dataTypes.BIGINT(10)
     };

@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const methodOverride = require('method-override')
+const paginate = require('express-paginate');
 
 const indexRouter = require('./routes/index');
 
@@ -18,8 +19,12 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.resolve(__dirname, '../public')));
 
 //URL encode  - Para que nos pueda llegar la información desde el formulario al req.body
+app.use(express.json())
 app.use(express.urlencoded({ extended: false }));
 
+app.use(paginate.middleware(8, 50))
+app.use('/api/v1/movies', require('./routes/v1/movies.routes'))
+app.use('/api/v1/genres', require('./routes/v1/genres.routes'))
 
 app.use('/', indexRouter);
 app.use(moviesRoutes);

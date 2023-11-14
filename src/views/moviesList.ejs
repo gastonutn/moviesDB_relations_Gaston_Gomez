@@ -2,34 +2,73 @@
 <html lang="en">
 
 <%- include('partials/head') %>
+
   <body class="bg-dark ">
     <%- include('partials/header') %>
-   
-    <div class="container">
-        <div class="row d-flex  ">
-   
-      
-      <h4 class="mt-5 ms-4">LISTADO DE PELÍCULAS</h4>
-        <div class="d-flex ms-4 gap-3">
-          <a class="btn " id="btns"  href="/movies/add">Agregar una Pelicula</a>
+
+      <div class="container ">
+        <div class="row d-flex justify-content-center">
+
+          <h4 class="mt-5 ms-4 d-flex justify-content-center">LISTADO DE PELÍCULAS</h4>
+          <div class="d-flex justify-content-center ms-4 gap-3">
+            <a class="btn" id="btns" href="/movies/add">Agregar una Pelicula</a>
             <a class="btn" id="btn" href="/">inicio</a>
-         </div>
-        
-   
-      <div >
-        <ul>
-            <% for( let i = 0; i < movies.length; i++ ) { %>
-            <li class="list-unstyled my-1 fs-5">
-                <a href="/movies/detail/<%= movies[i].id %>"><%= movies[i].title %></a>
-            </li>
-            <% } %>
-    
-        </ul>
+          </div>
+          <div class="d-flex justify-content-center col-8 col-md-4 mb-3 ">
+            <form action="/movies/search" method="GET" class="d-flex col-10 col-md-8 justify-content-center flex-wrap">
+              <input type="text" name="keyword" id="titulo" class="form-control mx-3">
+              <button class="btn mx-3" id="btns" type="submit">Buscar una Pelicula</button>
+            </form>
+          </div>
+          
+
+          <div class="d-flex justify-content-center ps-5">
+            <ul class="ps-0">
+              <% if (movies.length) { %>
+                <% for( let i=0; i < movies.length; i++ ) { %>
+                  <li class="list-unstyled my-1 mx-1  fs-5">
+                    <a href="/movies/detail/<%= movies[i].id %>">
+                      <%= movies[i].title %>
+                    </a>
+                  </li>
+                  <% } %>
+              <% }else { %>
+                <h2 class="alert alert-danger col-8 col-md-4 mb-3 d-flex justify-content-center" role="alert">no se encontro peli</h2>
+                <% } %>
+            </ul>
+           
+          </div>
+
+          <div class="pagination mx-4 d-flex justify-content-center">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination">
+
+                <% if (paginate.hasPreviousPages || paginate.hasNextPages) { %>
+
+                  <li class="page-item"> <a href="<%=paginate.href(true).prev%>" class="page-link"><i
+                        class="fa fa-angle-left"></i>Prev</a></li>
+
+                  <% if (pages) { %>
+                    <% pages.forEach(page=> { %>
+                      <li class="page-number"> <a href="<%= page.url  %>"
+                          class="page-link <%= page.number === currentPage && 'active' %> ">
+                          <%= page.number %>
+                        </a> </li>
+                      <% }); %>
+                        <% } %>
+
+                          <li class="page-item"><a href="<%= paginate.href(true).next %>" class="page-link prev"><i
+                                class="fa fa-angle-right"></i>Next</a></li>
+                          <% } %>
+              </ul>
+            </nav>
+          </div>
+        </div>
       </div>
-</div>
-</div>
-   
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-</body>
+
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+  </body>
 
 </html>
