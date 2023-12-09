@@ -1,14 +1,23 @@
+const { Op } = require("sequelize")
 const db = require("../database/models")
-const getAllMovies = async (limit, offset) => {
+const getAllMovies = async (limit, offset, keyword) => {
+
+    const options = keyword ? {
+        where: {
+            title: {
+                [Op.substring]: keyword
+            }
+        }
+    } : null;
 
     try {
         const movies = await db.Movie.findAll({
             limit,
             offset,
             attributes: {
-                exclude: ['created_at', 'updated_at']
+                exclude: ['created_at', 'updated_at','genre_id']
             },
-            incluide: [
+            include: [
                 {
                     association: 'genre',
                     attributes: ['id', 'name']
@@ -21,8 +30,11 @@ const getAllMovies = async (limit, offset) => {
                     }
                 }
             ],
+            ...options
         })
-        const count = await db.Movie.count()
+        const count = await db.Movie.count({
+            ...options
+        })
         console.log('<<<<<<<<<',count);
         return {
             movies,

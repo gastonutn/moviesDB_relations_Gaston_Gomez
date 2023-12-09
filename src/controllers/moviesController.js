@@ -303,7 +303,7 @@ const moviesController = {
 
                     const awardsArray = Awards.match(/\d+/g)
                     const awardsParseado = awardsArray.map(award => +award)
-                    const awards =  awardsParseado.reduce((acum,num) => acum + num,0)
+                    const awards =  awardsParseado.reduce((acum,num) => acum + num,0) || 2
                     
                     const rating = Ratings[0].Value.split('/')[0]
 
